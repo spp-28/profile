@@ -217,7 +217,7 @@
             background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
             padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
             border: 1px solid rgba(255, 255, 255, 0.05);
-            transition: var(--transition); /* Extremely smooth card hover */
+            transition: var(--transition);
             display: flex; flex-direction: column;
         }
 
@@ -239,22 +239,21 @@
         
         .more-content-wrapper {
             display: grid;
-            grid-template-rows: 0fr; /* Starts collapsed */
+            grid-template-rows: 0fr;
             transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
         }
         
         .more-content-wrapper.expanded {
-            grid-template-rows: 1fr; /* Expands smoothly based on content */
+            grid-template-rows: 1fr;
         }
 
         .more-content {
-            overflow: hidden; /* Hides content during animation */
+            overflow: hidden;
         }
 
         .more-content-inner {
             padding-top: 15px; border-top: 1px dashed rgba(0, 242, 254, 0.3);
             margin-top: 15px; opacity: 0; transform: translateY(-5px);
-            /* Content fades in and slides down slightly AFTER expansion starts */
             transition: opacity 0.3s ease-out, transform 0.3s ease-out;
             line-height: 1.6;
         }
@@ -339,6 +338,41 @@
             position: relative; z-index: 2; backdrop-filter: blur(8px);
             border-top: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-muted);
         }
+
+        /* ----- MOBILE RESPONSIVENESS FIXES ----- */
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2.2rem; 
+                line-height: 1.2;
+                margin-top: 15px;
+            }
+            .profile-img {
+                width: 140px; 
+                height: 140px;
+            }
+            .typing-container {
+                font-size: 1.2rem;
+                min-height: auto;
+                margin-bottom: 20px;
+            }
+            nav {
+                flex-direction: column;
+                padding: 1rem !important;
+                gap: 10px;
+            }
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1rem;
+            }
+            .contact-info {
+                gap: 10px;
+            }
+            .contact-btn {
+                padding: 8px 16px;
+                font-size: 0.85rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -372,7 +406,7 @@
     <header id="home">
         <div class="profile-container reveal">
             <div class="profile-img">
-                <img src="5Y0A5229.JPG" alt="Profile Image">
+                <img src="5Y0A5229.jpg" alt="Profile Image">
             </div>
         </div>
         <h1 class="reveal">Shriyanka Priya Pradhan<span class="hidden-cite"></span></h1>
