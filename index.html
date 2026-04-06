@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shriyanka Priya Pradhan - Portfolio</title>
+    <style>
+        /* Dark Mode Variables (Default & Only Theme) */
+        :root {
+            --bg-color: #0b0f19;
+            --text-main: #f8f9fa;
+            --text-muted: #a0aec0;
+            --accent-color: #00f2fe;
+            --accent-hover: #4facfe;
+            --card-bg: rgba(17, 24, 39, 0.7);
+            --shadow: 0 10px 30px rgba(0,242,254,0.05);
+            /* Upgraded, smoother transition curve for general interactions */
+            --transition: 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* DYNAMIC CHIP/ELECTRONICS BACKGROUND */
+        body {
+            background-color: var(--bg-color);
+            background-image:
+                linear-gradient(rgba(0, 242, 254, 0.07) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 242, 254, 0.07) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: var(--text-main);
+            line-height: 1.7;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: radial-gradient(rgba(0, 242, 254, 0.3) 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: -1px -1px;
+            z-index: -2;
+        }
+
+        .chip-signals {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .data-signal {
+            position: absolute;
+            background: var(--accent-color);
+            box-shadow: 0 0 10px var(--accent-color), 0 0 20px var(--accent-color);
+            border-radius: 4px;
+            opacity: 0;
+        }
+
+        .signal-h { height: 2px; width: 120px; animation: pulse-h linear infinite; }
+        .signal-v { width: 2px; height: 120px; animation: pulse-v linear infinite; }
+
+        .chip-signals div:nth-child(1) { top: 80px; left: -150px; animation-duration: 4s; animation-delay: 0s; }
+        .chip-signals div:nth-child(2) { top: 240px; left: -150px; animation-duration: 5s; animation-delay: 2s; }
+        .chip-signals div:nth-child(3) { top: 600px; left: -150px; animation-duration: 3.5s; animation-delay: 1s; }
+        .chip-signals div:nth-child(4) { left: 160px; top: -150px; animation-duration: 6s; animation-delay: 0.5s; }
+        .chip-signals div:nth-child(5) { left: 400px; top: -150px; animation-duration: 4.5s; animation-delay: 3s; }
+        .chip-signals div:nth-child(6) { left: 720px; top: -150px; animation-duration: 5.5s; animation-delay: 1.5s; }
+        .chip-signals div:nth-child(7) { left: 880px; top: -150px; animation-duration: 3s; animation-delay: 4s; }
+        .chip-signals div:nth-child(8) { top: 400px; left: -150px; animation-duration: 6.5s; animation-delay: 2.5s; }
+
+        @keyframes pulse-h {
+            0% { transform: translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(120vw); opacity: 0; }
+        }
+
+        @keyframes pulse-v {
+            0% { transform: translateY(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(120vh); opacity: 0; }
+        }
+
+        /* Hides the AI citation tags from the final webpage */
+        .hidden-cite { display: none; }
+
+        /* Scroll Progress Bar */
+        .progress-container {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 3px;
+            background: transparent; z-index: 2000;
+        }
+        .progress-bar {
+            height: 100%; background: var(--accent-color); width: 0%;
+            box-shadow: 0 0 10px var(--accent-color); transition: width 0.1s;
+        }
+
+        /* Transparent Navigation */
+        nav {
+            position: fixed; top: 0; width: 100%; background: transparent;
+            padding: 1.5rem 5%; display: flex; justify-content: space-between;
+            align-items: center; z-index: 1000; backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            transition: padding 0.3s ease;
+        }
+
+        .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+
+        .nav-links a {
+            text-decoration: none; color: var(--text-main); font-weight: 600;
+            position: relative; letter-spacing: 1px; text-transform: uppercase;
+            font-size: 0.9rem; transition: color 0.3s ease;
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px;
+            bottom: -5px; left: 0; background-color: var(--accent-color);
+            transition: var(--transition); box-shadow: 0 0 8px var(--accent-color);
+        }
+
+        .nav-links a:hover { color: var(--accent-color); }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Header / Hero */
+        header {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            padding: 0 20px;
+        }
+
+        .profile-container { position: relative; margin-bottom: 30px; z-index: 2; }
+
+        .profile-img {
+            width: 180px; height: 180px; border-radius: 50%;
+            background-color: var(--card-bg); border: 3px solid var(--accent-color);
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 0 25px rgba(0, 242, 254, 0.4);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
+            overflow: hidden;
+        }
+
+        .profile-img img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+        .profile-img:hover {
+            transform: scale(1.08) rotate(5deg);
+            box-shadow: 0 0 45px rgba(0, 242, 254, 0.7);
+        }
+
+        header h1 {
+            font-size: 3.5rem; margin-bottom: 10px; letter-spacing: -1px;
+            z-index: 2; text-shadow: 0 0 20px rgba(0,0,0,0.8);
+        }
+
+        .typing-container {
+            font-size: 1.5rem; color: var(--accent-color); min-height: 40px;
+            font-weight: 600; z-index: 2; text-shadow: 0 0 10px rgba(0, 242, 254, 0.3);
+        }
+
+        .cursor {
+            display: inline-block; width: 3px; background-color: var(--accent-color);
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+        /* Contact Links / Buttons */
+        .contact-info {
+            display: flex; gap: 15px; flex-wrap: wrap; justify-content: center;
+            margin-top: 30px; z-index: 2;
+        }
+
+        .contact-btn {
+            background: rgba(0, 242, 254, 0.05); color: var(--text-main);
+            text-decoration: none; padding: 10px 25px; border-radius: 25px;
+            font-weight: 600; border: 1px solid rgba(0, 242, 254, 0.3);
+            transition: var(--transition); backdrop-filter: blur(5px);
+        }
+
+        .contact-btn:hover {
+            background: var(--accent-color); color: #0b0f19;
+            box-shadow: 0 0 15px var(--accent-color); transform: translateY(-3px) scale(1.05);
+        }
+
+        /* Sections */
+        section { padding: 100px 10%; position: relative; z-index: 2; }
+
+        .section-title {
+            font-size: 2.5rem; margin-bottom: 50px; position: relative;
+            display: inline-block; text-shadow: 0 0 15px rgba(0,0,0,0.8);
+        }
+
+        .section-title::after {
+            content: ''; position: absolute; left: 0; bottom: -10px;
+            width: 50px; height: 3px; background: var(--accent-color);
+            transition: width 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            box-shadow: 0 0 10px var(--accent-color);
+        }
+
+        section:hover .section-title::after { width: 100%; }
+
+        /* Dynamic Grid Layouts */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px; align-items: start;
+        }
+
+        .card {
+            background: var(--card-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+            padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: var(--transition); /* Extremely smooth card hover */
+            display: flex; flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-8px); border-color: var(--accent-color);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5), 0 0 15px rgba(0, 242, 254, 0.15);
+        }
+
+        .card h3 { color: var(--accent-color); margin-bottom: 10px; line-height: 1.4;}
+
+        .card .date {
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;
+            display: inline-block; background: rgba(255,255,255,0.05);
+            padding: 4px 12px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ----- SMOOTH READ MORE (ACCORDION) LOGIC ----- */
+        .short-desc { margin-bottom: 10px; line-height: 1.6;}
+        
+        .more-content-wrapper {
+            display: grid;
+            grid-template-rows: 0fr; /* Starts collapsed */
+            transition: grid-template-rows 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        
+        .more-content-wrapper.expanded {
+            grid-template-rows: 1fr; /* Expands smoothly based on content */
+        }
+
+        .more-content {
+            overflow: hidden; /* Hides content during animation */
+        }
+
+        .more-content-inner {
+            padding-top: 15px; border-top: 1px dashed rgba(0, 242, 254, 0.3);
+            margin-top: 15px; opacity: 0; transform: translateY(-5px);
+            /* Content fades in and slides down slightly AFTER expansion starts */
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            line-height: 1.6;
+        }
+
+        .more-content-wrapper.expanded .more-content-inner {
+            opacity: 1; transform: translateY(0);
+            transition-delay: 0.1s; 
+        }
+
+        .read-more-btn {
+            background: transparent; color: var(--accent-color); border: 1px solid var(--accent-color);
+            padding: 6px 16px; border-radius: 20px; cursor: pointer; font-weight: 600;
+            font-size: 0.85rem; margin-top: 20px; align-self: flex-start;
+            transition: var(--transition); box-shadow: 0 0 5px rgba(0, 242, 254, 0.2);
+        }
+
+        .read-more-btn:hover {
+            background: var(--accent-color); color: #0b0f19; box-shadow: 0 0 15px rgba(0, 242, 254, 0.5);
+        }
+
+        /* Project Keywords */
+        .project-keywords { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 15px; }
+
+        .kw-tag {
+            font-size: 0.75rem; color: var(--accent-color); background: rgba(0, 242, 254, 0.05);
+            border: 1px solid rgba(0, 242, 254, 0.2); padding: 4px 10px; border-radius: 12px;
+            font-weight: 600; letter-spacing: 0.5px;
+        }
+
+        /* Filter Buttons for Projects */
+        .filter-container {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(5px); color: var(--text-main);
+            border: 1px solid rgba(255, 255, 255, 0.1); padding: 10px 25px; border-radius: 25px;
+            cursor: pointer; font-weight: 600; transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-color); color: #0b0f19; border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(0, 242, 254, 0.5); transform: translateY(-2px);
+        }
+
+        /* Smooth Filtering Animation Styles */
+        .project-card {
+            transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-origin: top center;
+        }
+
+        /* Interactive Skills */
+        .skills-wrapper { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+
+        .skill-pill {
+            background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(5px); color: var(--text-main);
+            padding: 12px 25px; border-radius: 30px; border: 1px solid rgba(0, 242, 254, 0.2);
+            font-weight: bold; cursor: default; transition: var(--transition);
+            position: relative; overflow: hidden;
+        }
+
+        .skill-pill::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: var(--accent-color); transition: var(--transition); z-index: 1;
+        }
+
+        .skill-pill:hover::before { left: 0; }
+        .skill-pill span { position: relative; z-index: 2; transition: color 0.3s; }
+        .skill-pill:hover span { color: #0b0f19; }
+
+        /* Smoother Reveal Animation Classes */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), transform 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        .reveal.active { opacity: 1; transform: translateY(0); }
+        
+        /* Transparent Footer */
+        footer {
+            text-align: center; padding: 30px; background: transparent; font-weight: 600;
+            position: relative; z-index: 2; backdrop-filter: blur(8px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05); color: var(--text-muted);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="chip-signals">
+        <div class="data-signal signal-h"></div>
+        <div class="data-signal signal-h"></div>
+        <div class="data-signal signal-h"></div>
+        <div class="data-signal signal-h"></div>
+        <div class="data-signal signal-v"></div>
+        <div class="data-signal signal-v"></div>
+        <div class="data-signal signal-v"></div>
+        <div class="data-signal signal-v"></div>
+    </div>
+
+    <div class="progress-container">
+        <div class="progress-bar" id="myBar"></div>
+    </div>
+
+    <nav id="navbar">
+        <h2 style="color: var(--accent-color); text-shadow: 0 0 10px rgba(0,242,254,0.5);">VLSI DESIGNER</h2>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#education">Background</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+        </ul>
+    </nav>
+
+    <header id="home">
+        <div class="profile-container reveal">
+            <div class="profile-img">
+                <img src="https://ui-avatars.com/api/?name=Shriyanka+Pradhan&size=200&background=00f2fe&color=0b0f19" alt="Profile Image">
+            </div>
+        </div>
+        <h1 class="reveal">Shriyanka Priya Pradhan<span class="hidden-cite"></span></h1>
+        <div class="typing-container reveal">
+            <span id="typed-text"></span><span class="cursor">|</span>
+        </div>
+        
+        <div class="contact-info reveal">
+            <a href="mailto:shriyankapriyap@gmail.com" class="contact-btn">shriyankapriyap@gmail.com<span class="hidden-cite"></span></a>
+            <a href="https://linkedin.com/in/shriyankapp98" target="_blank" class="contact-btn">LinkedIn<span class="hidden-cite"></span></a>
+            <a href="tel:+916265653332" class="contact-btn">+91-6265653332<span class="hidden-cite"></span></a>
+            <a href="tel:+918349061155" class="contact-btn">Alt: +91-8349061155<span class="hidden-cite"></span></a>
+        </div>
+    </header>
+
+    <section id="about">
+        <h2 class="section-title reveal">Professional Summary</h2>
+        <div class="card reveal" style="text-align: center; font-size: 1.2rem;">
+            <p>M.Tech VLSI Design Engineer with hands-on experience in RTL design, DFT, STA, and full RTL-to-GDSII physical design flow using Cadence and Synopsys tools.<span class="hidden-cite"></span> Strong background in ASIC design, timing closure, and high-performance digital circuits.<span class="hidden-cite"></span></p>
+        </div>
+    </section>
+
+    <section id="education">
+        <h2 class="section-title reveal">Education & Background</h2>
+        
+        <h3 style="margin-bottom: 20px; color: var(--accent-color);" class="reveal">Education</h3>
+        <div class="grid" style="margin-bottom: 40px;">
+            <div class="card reveal">
+                <h3>M.Tech - VLSI DESIGN Engineering<span class="hidden-cite"></span></h3>
+                <span class="date">SRM IST KTR | 2024-26<span class="hidden-cite"></span></span>
+                <p>CGPA: 8.46<span class="hidden-cite"></span></p>
+            </div>
+            <div class="card reveal">
+                <h3>B.E - Electronics and Telecommunication<span class="hidden-cite"></span></h3>
+                <span class="date">BIT, Raipur | 2016-20<span class="hidden-cite"></span></span>
+                <p>CGPA: 7.50<span class="hidden-cite"></span></p>
+            </div>
+            <div class="card reveal">
+                <h3>Class 12th<span class="hidden-cite"></span></h3>
+                <span class="date">MP & EV English Medium School, Vishakapatanam<span class="hidden-cite"></span></span>
+                <p>Percentage: 63.83%<span class="hidden-cite"></span></p>
+            </div>
+            <div class="card reveal">
+                <h3>Class 10th<span class="hidden-cite"></span></h3>
+                <span class="date">Kendriya Vidyalaya, Bacheli<span class="hidden-cite"></span></span>
+                <p>CGPA: 7.6<span class="hidden-cite"></span></p>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 20px; color: var(--accent-color);" class="reveal">Experience & Training</h3>
+        <div class="grid" style="margin-bottom: 40px;">
+            <div class="card reveal">
+                <h3>Bharat Sanchar Nigam Limited (BSNL)<span class="hidden-cite"></span></h3>
+                <span class="date">May 2019 - Jun 2019<span class="hidden-cite"></span></span>
+                <p>Underwent 2-week training programme on wireless communication and mobile connectivity systems.<span class="hidden-cite"></span></p>
+            </div>
+            <div class="card reveal">
+                <h3>National Mineral Development Corp (NMDC)<span class="hidden-cite"></span></h3>
+                <span class="date">May 2018 - Jun 2018<span class="hidden-cite"></span></span>
+                <p>Completed 4-week training programme on programmable logic controllers (PLC).<span class="hidden-cite"></span></p>
+            </div>
+        </div>
+
+        <h3 style="margin-bottom: 20px; color: var(--accent-color);" class="reveal">Certifications & Publications</h3>
+        <div class="grid">
+            <div class="card reveal">
+                <h3>Stanford Online<span class="hidden-cite"></span></h3>
+                <p>Shortest Path Revisited, NP-Complete Problems & What To Do About Them<span class="hidden-cite"></span></p>
+            </div>
+            <div class="card reveal">
+                <h3>Cadence Certified<span class="hidden-cite"></span></h3>
+                <p>Design for Test Fundamentals v5.0 & v4.0<span class="hidden-cite"></span></p>
+            </div>
+             <div class="card reveal">
+                <h3>Conference Presentation<span class="hidden-cite"></span></h3>
+                <p>Multichannel Surveillance System for ICU using CAM module (ICRESD'20)<span class="hidden-cite"></span></p>
+            </div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2 class="section-title reveal">Interactive Project Portfolio</h2>
+        
+        <div class="filter-container reveal">
+            <button class="filter-btn active" data-filter="all">All Projects</button>
+            <button class="filter-btn" data-filter="term">Term Projects</button>
+            <button class="filter-btn" data-filter="mini">Mini Projects</button>
+        </div>
+
+        <div class="grid" id="project-grid">
+            <div class="card project-card reveal" data-category="major">
+                <h3>High-Speed Vedic Multiplier via Kogge-Stone Adder<span class="hidden-cite"></span></h3>
+                <span class="date">Oct 2025 - Mar 2026<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Designed a high-speed, scalable Vedic multiplier utilizing a parallel-prefix Kogge-Stone Adder (KSA) to significantly reduce logical depth.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Drove the complete ASIC design flow from RTL synthesis to physical layout implementation, profiling PPA metrics and ensuring timing closure across various bit-widths across multiple technology nodes.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">ASIC Design Flow</span>
+                                <span class="kw-tag">RTL Synthesis</span>
+                                <span class="kw-tag">Kogge-Stone Adder</span>
+                                <span class="kw-tag">PPA Profiling</span>
+                                <span class="kw-tag">Timing Closure</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+            
+            <div class="card project-card reveal" data-category="term">
+                <h3>Integrated NMOS Differential Amplifier<span class="hidden-cite"></span></h3>
+                <span class="date">Jan 2025 - May 2025<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Designed an NMOS differential amplifier with active biasing in Cadence Virtuoso (Level-3 SPICE).<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Achieved ~18 dB gain and implemented the physical layout with DFT in Electric VLSI.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">Cadence Virtuoso</span>
+                                <span class="kw-tag">Level-3 SPICE</span>
+                                <span class="kw-tag">Electric VLSI</span>
+                                <span class="kw-tag">DFT</span>
+                                <span class="kw-tag">Active Biasing</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+
+            <div class="card project-card reveal" data-category="term">
+                <h3>Integrating NMC and LFP Chemistries in EVs<span class="hidden-cite"></span></h3>
+                <span class="date">Jan 2025 - May 2025<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Simulated thermal dynamics of hybrid NMC and LFP battery architectures using MATLAB.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Optimized energy allocation strategies to maximize efficiency while maintaining overall thermal stability in the system.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">MATLAB</span>
+                                <span class="kw-tag">Thermal Dynamics</span>
+                                <span class="kw-tag">Energy Allocation</span>
+                                <span class="kw-tag">NMC & LFP Chemistry</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+
+            <div class="card project-card reveal" data-category="mini">
+                <h3>3-bit Gray Counter using D-Flipflop<span class="hidden-cite"></span></h3>
+                <span class="date">Jul 2025 - Sept 2025<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Designed a glitch-free 3-bit Gray counter using standard D flip-flops.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Verified functionality and validated sequential logic via the TinyTapeout workflow.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">TinyTapeout Workflow</span>
+                                <span class="kw-tag">Sequential Logic</span>
+                                <span class="kw-tag">D Flip-flop</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+
+            <div class="card project-card reveal" data-category="mini">
+                <h3>N-bit Width Booth Multiplier using Synopsys<span class="hidden-cite"></span></h3>
+                <span class="date">Jan 2025 - Feb 2025<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Designed a parameterized N-bit Booth Multiplier for high-speed arithmetic operations.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Executed synthesis and physical design in Synopsys tools to heavily optimize PPA (Power, Performance, Area).<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">Synopsys EDA</span>
+                                <span class="kw-tag">Physical Design</span>
+                                <span class="kw-tag">RTL Synthesis</span>
+                                <span class="kw-tag">PPA Optimization</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+
+            <div class="card project-card reveal" data-category="mini">
+                <h3>CRC Error Detector<span class="hidden-cite"></span></h3>
+                <span class="date">Aug 2024 - Dec 2024<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Implemented a robust CRC error detection system directly within Cadence.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Validated the RTL functionality by cross-referencing all results against a software golden model.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">Cadence EDA</span>
+                                <span class="kw-tag">RTL Validation</span>
+                                <span class="kw-tag">Golden Model Verification</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+
+            <div class="card project-card reveal" data-category="mini">
+                <h3>Implementation of Modified CookToom<span class="hidden-cite"></span></h3>
+                <span class="date">Aug 2024 - Dec 2024<span class="hidden-cite"></span></span>
+                
+                <p class="short-desc">Implemented a 3x3 Modified Cook-Toom multiplier architecture in Cadence.<span class="hidden-cite"></span></p>
+                
+                <div class="more-content-wrapper">
+                    <div class="more-content">
+                        <div class="more-content-inner">
+                            <p>Executed the physical design layout and thoroughly analyzed the power, area, and delay trade-offs.<span class="hidden-cite"></span></p>
+                            <div class="project-keywords">
+                                <span class="kw-tag">Cadence</span>
+                                <span class="kw-tag">Physical Design</span>
+                                <span class="kw-tag">Multiplier Architecture</span>
+                                <span class="kw-tag">Power-Area-Delay Analysis</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="read-more-btn">Read More</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2 class="section-title reveal">Technical Arsenal</h2>
+        <div class="skills-wrapper reveal">
+            <div class="skill-pill"><span>Verilog<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>C/C++<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Python<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Cadence (Genus, Innovus)<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Synopsys (DC, ICCII, PrimeTime)<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Xilinx Vivado<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Silvaco TCAD<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>Comsol Multiphysics<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>ModelSim<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>SEMulator3D<span class="hidden-cite"></span></span></div>
+            <div class="skill-pill"><span>LTSpice<span class="hidden-cite"></span></span></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Shriyanka Priya Pradhan. VLSI Design Portfolio.</p>
+    </footer>
+
+    <script>
+        // Scroll Progress Bar & Dynamic Navbar styling
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("myBar").style.width = scrolled + "%";
+            
+            // Shrink navbar slightly on scroll for a smoother feel
+            const navbar = document.getElementById("navbar");
+            if (winScroll > 50) {
+                navbar.style.padding = "1rem 5%";
+                navbar.style.backgroundColor = "rgba(11, 15, 25, 0.9)"; // Darken slightly on scroll
+            } else {
+                navbar.style.padding = "1.5rem 5%";
+                navbar.style.backgroundColor = "transparent";
+            }
+        };
+
+        // Typing Effect
+        const textArray = ["M.Tech VLSI Design Engineer", "RTL-to-GDSII Specialist", "ASIC Design Enthusiast"];
+        let textIndex = 0, charIndex = 0, isDeleting = false;
+        const typedTextSpan = document.getElementById("typed-text");
+
+        function typeEffect() {
+            const currentText = textArray[textIndex];
+            if (isDeleting) {
+                typedTextSpan.textContent = currentText.substring(0, charIndex - 1);
+                charIndex--;
+            } else {
+                typedTextSpan.textContent = currentText.substring(0, charIndex + 1);
+                charIndex++;
+            }
+
+            let typeSpeed = isDeleting ? 40 : 80;
+
+            if (!isDeleting && charIndex === currentText.length) {
+                typeSpeed = 2500; 
+                isDeleting = true;
+            } else if (isDeleting && charIndex === 0) {
+                isDeleting = false;
+                textIndex = (textIndex + 1) % textArray.length;
+                typeSpeed = 400; 
+            }
+
+            setTimeout(typeEffect, typeSpeed);
+        }
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            setTimeout(typeEffect, 1000);
+        });
+
+        // SMOOTH Project Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const projectCards = document.querySelectorAll('.project-card');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filterValue = btn.getAttribute('data-filter');
+
+                projectCards.forEach(card => {
+                    // Step 1: Smoothly fade and shrink out
+                    card.style.opacity = '0';
+                    card.style.transform = 'scale(0.8)';
+                    
+                    // Step 2: Swap display states rapidly while invisible
+                    setTimeout(() => {
+                        if (filterValue === 'all' || card.getAttribute('data-category') === filterValue) {
+                            card.style.display = 'flex'; 
+                            // Step 3: Smoothly fade and pop back in
+                            setTimeout(() => {
+                                card.style.opacity = '1';
+                                card.style.transform = 'scale(1)';
+                            }, 50);
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    }, 250); // Faster, smoother transition delay
+                });
+            });
+        });
+
+        // SMOOTH Read More Accordions
+        const readMoreBtns = document.querySelectorAll('.read-more-btn');
+        readMoreBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                // The wrapper is now the direct previous sibling of the button
+                const contentWrapper = this.previousElementSibling;
+                
+                // Toggle the 'expanded' class which triggers the 0fr -> 1fr CSS Grid animation
+                contentWrapper.classList.toggle('expanded');
+                
+                // Update button text
+                if (contentWrapper.classList.contains('expanded')) {
+                    this.textContent = 'Read Less';
+                } else {
+                    this.textContent = 'Read More';
+                }
+            });
+        });
+
+        // Smoother Scroll Reveal Animations
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().top;
+                var elementVisible = 100;
+                if (elementTop < windowHeight - elementVisible) {
+                    reveals[i].classList.add("active");
+                }
+            }
+        }
+        window.addEventListener("scroll", reveal);
+        reveal(); // Trigger on load
+    </script>
+</body>
+</html>
